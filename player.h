@@ -11,5 +11,7 @@ private:
 public:
 	//void take_card( Value new_card);
 	bool player_win(int player_hand1, int player_hand2);
+	
+	
 };
 
