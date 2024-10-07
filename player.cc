@@ -20,3 +20,17 @@ bool Player::player_win(int player_hand1, int player_hand2)
 		return false;
 	}
 }
+
+void Player::AddCard(Carte carte)
+{
+	hand.push_back(carte);
+
+}
+
+void Player::DisplayHand()
+{
+	for (auto h:hand)
+	{
+		std::cout << h.GetValueToString() << " of " << h.GetSuitString() << '\n';
+	}
+}
