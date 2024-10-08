@@ -11,13 +11,13 @@ class Cards
 public:
 	Value value_;
 	Suit suit_;
-	
+
 	int score;
 	int field_card[3] = { 0 };
 	int decksize = 3;
 
 	Cards(int value, int suit);
-	
+
 	std::string GetValueToString();
 	std::string GetSuitString();
 	int GetValueToInt();
@@ -25,6 +25,7 @@ public:
 };
 enum class Value
 {
+	kNull = 0,
 	kAce = 1,
 	k2 = 2,
 	k3 = 3,
