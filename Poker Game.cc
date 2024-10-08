@@ -3,7 +3,7 @@
 #include "player.h"
 
 
-#include "carte.h"
+#include "Cards.h"
 #include "Deck.h"
 
 int hand1;
@@ -71,11 +71,11 @@ int main()
 
 
 
-	/*Carte carte_1;
-	Carte carte_2;
-	Carte carte_3;
-	Carte carte_4;
-	Carte field_card;*/
+	/*Cards carte_1;
+	Cards carte_2;
+	Cards carte_3;
+	Cards carte_4;
+	Cards field_card;*/
 
 
 	/*std::string<int>carte_p1 = 4;
@@ -97,7 +97,7 @@ int main()
 	/*int Score_p1 = carte_1.value_()+ carte_2.value_();
 	int Score_p2 = carte_3.value_() + carte_4.value_();*/
 
-	//hand = (Carte)carte_1;
+	//hand = (Cards)carte_1;
 	//std::queue<int>deck;
 	//for (auto player : carte_p1)
 	//{

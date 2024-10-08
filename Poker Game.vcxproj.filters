@@ -15,27 +15,33 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Poker Game.cpp">
+    <ClCompile Include="Poker Game.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Carte.cc">
+    <ClCompile Include="Cards.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="player.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Deck.cpp">
+    <ClCompile Include="Deck.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Rankings.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Carte.h">
+    <ClInclude Include="Cards.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Deck.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rankings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

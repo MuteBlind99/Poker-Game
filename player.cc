@@ -1,12 +1,12 @@
 #include "player.h"
 
-#include "Carte.h"
+#include "Cards.h"
 
 
 
 bool Player::player_win(int player_hand1, int player_hand2)
 {
-	
+
 
 
 
@@ -31,7 +31,7 @@ bool Player::player_win(int player_hand1, int player_hand2)
 	}
 }
 
-void Player::AddCard(Carte carte)
+void Player::AddCard(Cards carte)
 {
 	hand.push_back(carte);
 
@@ -39,15 +39,10 @@ void Player::AddCard(Carte carte)
 
 void Player::DisplayHand()
 {
-	for (auto h:hand)
+	for (auto h : hand)
 	{
 		std::cout << h.GetValueToString() << " of " << h.GetSuitString() << '\n';
 	}
 }
 
-//int Player::PlayerHandSuit()
-//{
-//	if()
-//	return score_;
-//
-//}
+

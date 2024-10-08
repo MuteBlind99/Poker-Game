@@ -6,7 +6,7 @@
 enum class Suit;
 enum class Value;
 
-class Carte
+class Cards
 {
 public:
 	Value value_;
@@ -16,12 +16,12 @@ public:
 	int field_card[3] = { 0 };
 	int decksize = 3;
 
-	Carte(int value, int suit);
-	int DrawCard();
-	int FieldCard();
+	Cards(int value, int suit);
+	
 	std::string GetValueToString();
 	std::string GetSuitString();
 	int GetValueToInt();
+	static bool CardCompare(const Cards& a, const Cards& b);
 };
 enum class Value
 {

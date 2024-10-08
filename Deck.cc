@@ -22,9 +22,9 @@ void Deck::DrawDeck()
 	}
 }
 
-Carte Deck::PickRemovedCard()
+Cards Deck::PickRemovedCard()
 {
-	Carte carte = Cartes.front();
+	Cards carte = Cartes.front();
 	Cartes.erase(Cartes.begin());
 	return carte;
 }

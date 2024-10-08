@@ -1,14 +1,14 @@
 #pragma once
-#include "Carte.h"
+#include "Cards.h"
 
 class Deck
 {
 public:
 	void MakeDeck();
 	void DrawDeck();
-	Carte PickRemovedCard();
+	Cards PickRemovedCard();
 	void ShuffleDeck();
 private:
-	std::vector<Carte>Cartes;
+	std::vector<Cards>Cartes;
 };
 

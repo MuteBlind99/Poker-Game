@@ -1,4 +1,4 @@
-#include "Carte.h"
+#include "Cards.h"
 
 
 #include <iostream>
@@ -6,7 +6,7 @@
 #include <random>
 #include <string>
 
-Carte::Carte(int value, int suit)
+Cards::Cards(int value, int suit)
 {
 	value_ = static_cast<Value>(value);
 	suit_ = static_cast<Suit>(suit);
@@ -14,7 +14,7 @@ Carte::Carte(int value, int suit)
 
 
 
-std::string Carte::GetValueToString()
+std::string Cards::GetValueToString()
 {
 
 	switch (value_)
@@ -38,7 +38,7 @@ std::string Carte::GetValueToString()
 	return {};
 	
 }
-std::string Carte::GetSuitString()
+std::string Cards::GetSuitString()
 {
 	switch (suit_)
 	{
@@ -50,7 +50,12 @@ std::string Carte::GetSuitString()
 	return {};
 }
 
-int Carte::GetValueToInt()
+int Cards::GetValueToInt()
 {
 	return static_cast<int>(value_);
+}
+
+bool Cards::CardCompare(const Cards& a, const Cards& b)
+{
+	return static_cast<int>(a.value_) < static_cast<int>(b.value_);
 }
