@@ -1,11 +1,21 @@
 #include "player.h"
 
 #include "Carte.h"
-#include <cstdlib>
+
 
 
 bool Player::player_win(int player_hand1, int player_hand2)
 {
+	
+
+
+
+
+
+
+
+
+
 	if (player_hand1 > player_hand2)
 	{
 		return true;
@@ -34,3 +44,10 @@ void Player::DisplayHand()
 		std::cout << h.GetValueToString() << " of " << h.GetSuitString() << '\n';
 	}
 }
+
+//int Player::PlayerHandSuit()
+//{
+//	if()
+//	return score_;
+//
+//}

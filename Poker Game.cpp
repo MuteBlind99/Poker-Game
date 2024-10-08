@@ -26,18 +26,33 @@ int main()
 
 	Player player1;
 	Player player2;
+	Player dealer;
 
-
-
+	//Players draw cards
 	for (int i = 0; i <= 1; i++)
 	{
 		player1.AddCard(deck.PickRemovedCard());
 		player2.AddCard(deck.PickRemovedCard());
 	}
+	std::cout << "You got a "<<'\n';
 	player1.DisplayHand();
 	std::cout << '\n';
-	player2.DisplayHand();
 
+	std::cout << "Other player got a " << '\n';
+	player2.DisplayHand();
+	std::cout << '\n';
+
+
+	//Field Card
+	for(int i= 0; i<=4; i++)
+	{
+		dealer.AddCard(deck.PickRemovedCard());
+	}
+	std::cout << "Card on field : " << '\n';
+	dealer.DisplayHand(); 
+	std::cout << '\n';
+
+	//Who win the party ?
 	if (player1.Hand().front().GetValueToInt() == player2.Hand().front().GetValueToInt())
 	{
 		std::cout << ""<< '\n';
