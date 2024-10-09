@@ -6,6 +6,29 @@
 #include <random>
 #include <string>
 
+Cards::Value Cards::IntToEnumValue(int value)
+{
+	switch (value)
+	{
+
+	case 1: return Value::kAce;
+	case 2: return Value::k2;
+	case 3: return Value::k3;
+	case 4: return Value::k4;
+	case 5: return Value::k5;
+	case 6: return Value::k6;
+	case 7: return Value::k7;
+	case 8: return Value::k8;
+	case 9: return Value::k9;
+	case 10: return Value::k10;
+	case 11: return Value::kJack;
+	case 12: return Value::kQueen;
+	case 13: return Value::kKing;
+
+	}
+	return{};
+}
+
 Cards::Cards(int value, int suit)
 {
 	value_ = static_cast<Value>(value);
@@ -53,6 +76,11 @@ std::string Cards::GetSuitString()
 int Cards::GetValueToInt()
 {
 	return static_cast<int>(value_);
+}
+
+bool Cards::operator>(std::vector<Cards>::const_reference other) const
+{
+	return value_ > other.value_;
 }
 
 bool Cards::CardCompare(const Cards& a, const Cards& b)

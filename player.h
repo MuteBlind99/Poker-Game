@@ -17,12 +17,11 @@ public:
 		kHighCard,
 		kPair,
 		kDoublePair,
-		kTreeOfAKind,
+		kTreeOfAKinf,
 		kStraight,
 		kFlush,
 		kFullHouse,
 		kFourOfKind,
-		kStraightFlush,
 		kRoyalFlush,
 
 	};
@@ -30,11 +29,16 @@ public:
 	bool player_win(int player_hand1, int player_hand2);
 	void AddCard(Cards carte);
 	void DisplayHand();
+	void RestHand();
+	std::string RankToString();
 	std::vector<Cards>Hand()
 	{
 		return  hand;
 	}
+
+
 	int PlayerHandStraight(Player playerhand, Player dealerhand);
+
 	Rank rankings_;
 };
 

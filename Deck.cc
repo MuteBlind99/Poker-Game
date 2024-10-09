@@ -35,3 +35,8 @@ void Deck::ShuffleDeck()
 	std::mt19937 generator(rd());
 	std::shuffle(Cartes.begin(), Cartes.end(),generator);
 }
+
+void Deck::DeckReset()
+{
+	Cartes.clear();
+}

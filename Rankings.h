@@ -5,8 +5,7 @@
 class Rankings
 {
 public:
-	
-	void Straight(Player & player, std::vector<Cards> dealer);
+	Cards::Value Straight(Player& player, std::vector<Cards> dealer);
 	
 };
 

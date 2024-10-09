@@ -8,6 +8,7 @@ public:
 	void DrawDeck();
 	Cards PickRemovedCard();
 	void ShuffleDeck();
+	void DeckReset();
 private:
 	std::vector<Cards>Cartes;
 };

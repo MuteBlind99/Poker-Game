@@ -45,4 +45,20 @@ void Player::DisplayHand()
 	}
 }
 
+void Player::RestHand()
+{
+	hand.clear();
+	rankings_ = Rank::kNull;
+}
+
+std::string Player::RankToString()
+{
+	switch (rankings_)
+	{
+	case Rank::kStraight: return "Straight";
+	default: return "High Card";
+	}
+	return {};
+}
+
 
