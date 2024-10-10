@@ -31,6 +31,7 @@ public:
 	void DisplayHand();
 	void RestHand();
 	std::string RankToString();
+
 	std::vector<Cards>Hand()
 	{
 		return  hand;

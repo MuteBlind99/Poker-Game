@@ -62,7 +62,7 @@ int main()
 		std::cout << '\n';
 
 
-		Cards::Value value = rank_player.Straight(player1, dealer.Hand());
+		Cards::Value value = rank_player.DoublePair(player1, dealer.Hand());
 
 		rank_ = player1.rankings_;
 
@@ -76,7 +76,7 @@ int main()
 		dealer.RestHand();
 		deck.DeckReset();
 	}
-	while (rank_ != Player::Rank::kStraight);
+	while (rank_ != Player::Rank::kDoublePair);
 
 
 

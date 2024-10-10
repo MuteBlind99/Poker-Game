@@ -51,14 +51,24 @@ void Player::RestHand()
 	rankings_ = Rank::kNull;
 }
 
+
 std::string Player::RankToString()
 {
 	switch (rankings_)
 	{
 	case Rank::kStraight: return "Straight";
+	case Rank::kDoublePair: return "Double Pair";
+	case Rank::kPair: return "Pair";
+	case Rank::kFlush: return "Double Pair";
+	case Rank::kRoyalFlush: return "Royal Flush";
+	case Rank::kFourOfKind: return "Four of kind";
+	case Rank::kTreeOfAKinf: return " Tree of a Kinf";
+	case Rank::kFullHouse: return "Fullhouse";
+
+
+
 	default: return "High Card";
 	}
 	return {};
 }
-
 
