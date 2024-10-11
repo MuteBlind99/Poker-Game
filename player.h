@@ -8,7 +8,7 @@ class Player
 {
 private:
 	std::vector<Cards>hand;
-	//const Value new_card = card;
+	
 public:
 	Player();
 	enum class Rank

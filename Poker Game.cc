@@ -79,19 +79,46 @@ int main()
 	Player bot;
 	Player dealer;
 	Rankings rank_player;
+	int bank = 10;
+	int player_bank = bank;
+	int bot_bank = bank;
 	bool game_over = false;
-
+	char reset_button;
+	int bet = 0;
+	int bot_bet = 0;
+	bool reset_party = true;
+	std::cout << "Welcome to the Poker game";
 	do
 	{
+
 		NewRound(deck, player1, bot, dealer);
 
 		DrawCard(deck, player1, bot);
 
 		DisplayHandPlayer(player1, bot);
 
-		Flop(deck, dealer);
+		Flop(deck, dealer);//3 cards 
 
 		DisplayTable(player1, bot, dealer);
+
+
+		while (bot_bet < 1)
+		{
+			std::cout << "What's your bet ? [1] [3] [5] [10]";
+			std::cin >> bet;
+			switch (bet)
+			{
+			case 1: bot_bet = bet; break;
+			case 3:bot_bet = bet; break;
+			case 5:bot_bet = bet; break;
+			case 10:bot_bet = bet; break;
+			default: std::cout << "Invalid Command" << std::endl;
+				bet = 0;
+				break;
+			}
+		}
+
+
 
 		//Turn
 		dealer.AddCard(deck.PickRemovedCard());
@@ -109,46 +136,110 @@ int main()
 
 		if (player1.RankToInt() > bot.RankToInt())
 		{
-			std::cout << "Player 1 wins" << std::endl;
+			player_bank = player_bank + bot_bet;
+			bot_bank = bot_bank - bet;
+			std::cout << "Player 1 wins " << bot_bet << std::endl;
+			bet = 0;
+			bot_bet = 0;
 		}
-		else if(player1.RankToInt() < bot.RankToInt())
+		else if (player1.RankToInt() < bot.RankToInt())
 		{
-			std::cout << "bot wins" << std::endl;
+			player_bank = player_bank - bot_bet;
+			bot_bank = bot_bank + bet;
+			std::cout << "bot wins " << bet << std::endl;
+			bet = 0;
+			bot_bet = 0;
 		}
-		else if(player1.RankToInt() == bot.RankToInt())
+		else if (player1.RankToInt() == bot.RankToInt())
 		{
 			if (player1.high_card_.GetValueToInt() > bot.high_card_.GetValueToInt())
 			{
 				if (bot.high_card_.GetValueToInt() == 1)
 				{
-					std::cout << "bot wins" << std::endl;
+					player_bank = player_bank - bot_bet;
+					bot_bank = bot_bank + bet;
+					std::cout << "bot wins " << bet << std::endl;
+					bet = 0;
+					bot_bet = 0;
 				}
 				else
 				{
-					std::cout << "Player 1 wins" << std::endl;
+					player_bank = player_bank + bot_bet;
+					bot_bank = bot_bank - bet;
+					std::cout << "Player 1 wins " << bot_bet << std::endl;
+					bet = 0;
+					bot_bet = 0;
 				}
 			}
 			else if (player1.high_card_.GetValueToInt() < bot.high_card_.GetValueToInt())
 			{
 				if (player1.high_card_.GetValueToInt() == 1)
 				{
-					std::cout << "Player 1 wins" << std::endl;
+					player_bank = player_bank + bot_bet;
+					bot_bank = bot_bank - bet;
+					std::cout << "Player 1 wins " << bot_bet << std::endl;
+					bet = 0;
+					bot_bet = 0;
+
 				}
 				else
 				{
-					std::cout << "bot wins" << std::endl;
+					player_bank = player_bank - bot_bet;
+					bot_bank = bot_bank + bet;
+					
+					std::cout << "bot wins " << bet << std::endl;
+					bet = 0;
+					bot_bet = 0;
 				}
 			}
-			else if(player1.high_card_.GetValueToInt() == bot.high_card_.GetValueToInt())
+			else if (player1.high_card_.GetValueToInt() == bot.high_card_.GetValueToInt())
 			{
+				player_bank = player_bank - bot_bet;
+				bot_bank = bot_bank + bet;
+				
 				std::cout << "It's a tie" << std::endl;
+				bet = 0;
+				bot_bet = 0;
 			}
 		}
 
-		game_over = true;
+		std::cout << "Player1 got : " << player_bank << std::endl;
+		std::cout << "Bot got : " << bot_bank << std::endl;
+		if (player_bank <= 0)
+		{
+			std::cout << "Game Over"<<std::endl;
+			game_over = true;
+		}
+		else if (bot_bank <= 0)
+		{
+			std::cout << "Game Over" << std::endl;
+			game_over = true;
+		}
+
+	} while (!game_over);
+	
+	while (reset_party)
+	{
+		std::cout << "Do you to play again ? [y/Y]Yes  [n/N]No" << std::endl;
+		std::cin >> reset_button;
+		if(reset_button=='y' || reset_button=='Y')
+		{
+			game_over = false;
+		}
+
+		switch (reset_button)
+		{
+		case 'y': case'Y':
+			reset_party = false;
+			break;
+
+		case 'n': case'N':
+			std::cout << "Bye bye" << std::endl;
+			reset_party = false;
+			break;
+		default: std::cout<<"Invalid Command"<<std::endl;
+				break;
+		}
 	}
-	while (!game_over);
 
-
-	system("pause");
 }
