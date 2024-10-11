@@ -216,30 +216,32 @@ int main()
 			game_over = true;
 		}
 
+
+		if (game_over)
+		{
+			while (reset_party)
+			{
+				std::cout << "Do you to play again ? [y/Y]Yes  [n/N]No" << std::endl;
+				std::cin >> reset_button;
+				if(reset_button=='y' || reset_button=='Y')
+				{
+					game_over = false;
+				}
+
+				switch (reset_button)
+				{
+				case 'y': case'Y':
+					reset_party = false;
+					break;
+
+				case 'n': case'N':
+					std::cout << "Bye bye" << std::endl;
+					reset_party = false;
+					break;
+				default: std::cout<<"Invalid Command"<<std::endl;
+					break;
+				}
+			}
+		}
 	} while (!game_over);
-	
-	while (reset_party)
-	{
-		std::cout << "Do you to play again ? [y/Y]Yes  [n/N]No" << std::endl;
-		std::cin >> reset_button;
-		if(reset_button=='y' || reset_button=='Y')
-		{
-			game_over = false;
-		}
-
-		switch (reset_button)
-		{
-		case 'y': case'Y':
-			reset_party = false;
-			break;
-
-		case 'n': case'N':
-			std::cout << "Bye bye" << std::endl;
-			reset_party = false;
-			break;
-		default: std::cout<<"Invalid Command"<<std::endl;
-				break;
-		}
-	}
-
 }
