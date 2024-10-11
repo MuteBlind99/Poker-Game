@@ -3,32 +3,8 @@
 #include "Cards.h"
 
 
-
-bool Player::player_win(int player_hand1, int player_hand2)
+Player::Player() : high_card_(Cards(0,5))
 {
-
-
-
-
-
-
-
-
-
-
-	if (player_hand1 > player_hand2)
-	{
-		return true;
-
-	}
-	else if (player_hand1 == player_hand2)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
 }
 
 void Player::AddCard(Cards carte)
@@ -71,4 +47,6 @@ std::string Player::RankToString()
 	}
 	return {};
 }
+
+
 

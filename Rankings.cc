@@ -4,16 +4,36 @@
 #include "Cards.h"
 #include "player.h"
 
-Cards::Value Rankings::Straight(Player& player, std::vector<Cards> dealer)
+void Rankings::HighCard(Player& player)
 {
-	std::vector<Cards>allcards = dealer;
-	for (auto h : player.Hand())
-	{
-		allcards.emplace_back(h);
+	if (player.Hand().front() > player.Hand().back()) {
+		if (player.Hand().back().value_ == Cards::Value::kAce)
+		{
+			player.high_card_ = player.Hand().back();
+		}
+		player.high_card_ = player.Hand().front();
 	}
-	//Number order cards
-	std::sort(allcards.begin(), allcards.end(), Cards::CardCompare);
+	player.high_card_ = player.Hand().back();
+}
 
+void Rankings::Straight(Player& player, std::vector<Cards>& player_hand, std::vector<Cards> dealer)
+{
+	std::vector<Cards>allcards;
+	straight = false;
+	if (!flush)
+	{
+		allcards = dealer;
+		for (auto h : player_hand)
+		{
+			allcards.emplace_back(h);
+		}
+		//Number order cards
+		std::sort(allcards.begin(), allcards.end(), Cards::CardCompare);
+	}
+	else
+	{
+		allcards = player_hand;
+	}
 	bool flag_Ace = false;
 	int straight_count = 1;
 	int old_card = 0;
@@ -57,11 +77,12 @@ Cards::Value Rankings::Straight(Player& player, std::vector<Cards> dealer)
 	bool real_straight = false;
 
 	//Card suit vérification in hand of player
-	for (auto hand : player.Hand())
+	for (auto hand : player_hand)
 	{
 		if (hand.GetValueToInt() >= old_card - straight_count && hand.GetValueToInt() <= old_card)
 		{
 			real_straight = true;
+
 		}
 	}
 
@@ -70,61 +91,31 @@ Cards::Value Rankings::Straight(Player& player, std::vector<Cards> dealer)
 	{
 		if (old_card == 5 || old_card == 13)
 		{
+			straight = true;
 			player.rankings_ = Player::Rank::kStraight;
-			return Cards::IntToEnumValue(old_card);
+			player.high_card_.value_ = Cards::IntToEnumValue(old_card);
 
 		}
 	}
 	//5 same suit
 	else if (straight_count >= 5 && real_straight)
 	{
+		straight = true;
 		player.rankings_ = Player::Rank::kStraight;
-		return Cards::IntToEnumValue(old_card);
+		player.high_card_.value_ = Cards::IntToEnumValue(old_card);
 
 	}
 	//Highcard
-	else if (player.Hand().front() > player.Hand().back())
-	{
-		if (player.Hand().back().value_ == Cards::Value::kAce)
-		{
-			return player.Hand().back().value_;
-		}
-		return player.Hand().front().value_;
-	}
 	else
 	{
-		return player.Hand().back().value_;
+		player.rankings_ = Player::Rank::kHighCard;
 	}
 
-	/*switch (suit)
-	{
-	case Player::Rank::kHighCard:
-		old_suit = 1;
-		nb_suit = nb_suit + 1;
-		break;
-	case Player::Rank::kPair:
-		old_suit = 2;
-		break;
-	case Player::Rank::kDoublePair:
-		break;
-	case Player::Rank::kTreeOfAKinf:
-		break;
-	case Player::Rank::kStraight:
-		break;
-	case Player::Rank::kFlush:
-		break;
-	case Player::Rank::kFullHouse:
-		break;
-	case Player::Rank::kFourOfKind:
-		break;
-	case Player::Rank::kRoyalFlush:
-		break;
 
-	}*/
 
 }
 
-Cards::Value Rankings::DoublePair(Player& player, std::vector<Cards> dealer)
+void Rankings::DoublePair(Player& player, std::vector<Cards> dealer)
 {
 	std::vector<Cards>allcards = dealer;
 	for (auto h : player.Hand())
@@ -172,18 +163,18 @@ Cards::Value Rankings::DoublePair(Player& player, std::vector<Cards> dealer)
 	switch (pair_count)
 	{
 	case 1:player.rankings_ = Player::Rank::kPair;
-		return Cards::IntToEnumValue(old_card);
+		player.high_card_.value_ = Cards::IntToEnumValue(old_card);
 	case 3:
 		player.rankings_ = Player::Rank::kDoublePair;
-		return Cards::IntToEnumValue(old_card);
+		player.high_card_.value_ = Cards::IntToEnumValue(old_card);
 	case 4:
 		player.rankings_ = Player::Rank::kFourOfKind;
-		return Cards::IntToEnumValue(old_card);
+		player.high_card_.value_ = Cards::IntToEnumValue(old_card);
 	}
-	return {};
+
 }
 
-Cards::Value Rankings::FullHouse(Player& player, std::vector<Cards> dealer)
+void Rankings::FullHouse(Player& player, std::vector<Cards> dealer)
 {
 	std::vector<Cards>allcards = dealer;
 	for (auto h : player.Hand())
@@ -193,57 +184,178 @@ Cards::Value Rankings::FullHouse(Player& player, std::vector<Cards> dealer)
 
 	std::sort(allcards.begin(), allcards.end(), Cards::CardCompare);
 
-	int triple_count = 0;
-	int pair_count = 0;
+
+	bool is_pair = false;
+	bool is_tree = false;
 	int old_card = 0;
-	int first_card = 0;
 	for (auto card : allcards)
 	{
-		if (card.GetValueToInt() == first_card)
+		if (card.GetValueToInt() == old_card)
 		{
-			if (card.GetValueToInt() == old_card)
+			if (is_pair)
 			{
-				triple_count++;
-				old_card = card.GetValueToInt();
+				is_tree = true;
+				is_pair = false;
+				continue;
 			}
-			else
-			{
-				pair_count++;
-				old_card = card.GetValueToInt();
-			}
-
+			is_pair = true;
 		}
 		else
 		{
-			if (card.GetValueToInt() == old_card)
-			{
-				old_card = card.GetValueToInt();
-			}
-			/*{
-				old_card= card.GetValueToInt();
-			}*/
-
-
-			first_card = card.GetValueToInt();
+			is_pair = false;
+			old_card = card.GetValueToInt();
 		}
-
-
-	}
-	if (triple_count == 1)
-	{
-		switch (pair_count)
+		if (is_pair && is_tree)
 		{
-		case 2:player.rankings_ = Player::Rank::kTreeOfAKinf;
-			return Cards::IntToEnumValue(old_card);
-
-		case 3:player.rankings_ = Player::Rank::kFullHouse;
-			return Cards::IntToEnumValue(old_card);
+			player.rankings_ = Player::Rank::kFullHouse;
 		}
+	}
+	if (is_tree && !is_pair)
+	{
+		player.rankings_ = Player::Rank::kTreeOfAKinf;
+	}
 
+}
+
+void Rankings::StraightFlush(Player& player, std::vector<Cards> dealer)
+{
+	std::vector<Cards>v_straight_flush = Flush(player, dealer);
+	if (flush)
+	{
+		Straight(player, v_straight_flush, dealer);
+	}
+	else
+	{
+		Straight(player, player.Hand(), dealer);
+	}
+	if (flush&&straight)
+	{
+		player.rankings_ = Player::Rank::kStraightFlush;
+		RoyalFlush(player, v_straight_flush);
+	}
+}
+
+void Rankings::CheckHand(Player& player, std::vector<Cards> dealer)
+{
+	player.rankings_ = Player::Rank::kHighCard;
+
+	FullHouse(player, dealer);
+
+	DoublePair(player, dealer);
+
+	Straight(player, player.Hand(), dealer);
+
+	HighCard(player);
+	//Flush(player, dealer);
+}
+
+std::vector<Cards> Rankings::Flush(Player& player, std::vector<Cards> dealer)
+{
+	std::vector<Cards>allcards = dealer;
+	for (auto h : player.Hand())
+	{
+		allcards.emplace_back(h);//Add player in vector Card
+	}
+
+	std::vector<Cards>v_Club;
+	std::vector<Cards>v_Square;
+	std::vector<Cards>v_Diamond;
+	std::vector<Cards>v_Heart;
+	auto suit_return = Cards::Suit::kNoSuit;
+	bool is_flush = false;
+	flush = false;
+	for (auto card : allcards)
+	{
+		switch (card.suit_)
+		{
+		case Cards::Suit::kClub:
+			v_Club.emplace_back(card);
+			if (!is_flush && v_Club.size() >= 5)
+			{
+				suit_return = Cards::Suit::kClub;
+				is_flush = true;
+			}
+			break;
+
+		case Cards::Suit::kSquare:
+			v_Square.emplace_back(card);
+			if (!is_flush && v_Square.size() >= 5)
+			{
+				suit_return = Cards::Suit::kSquare;
+				is_flush = true;
+			}
+			break;
+
+		case Cards::Suit::kDiamond:
+			v_Diamond.emplace_back(card);
+			if (!is_flush && v_Diamond.size() >= 5)
+			{
+				suit_return = Cards::Suit::kDiamond;
+				is_flush = true;
+			}
+			break;
+
+		case Cards::Suit::kHeart:
+			v_Heart.emplace_back(card);
+			if (!is_flush && v_Heart.size() >= 5)
+			{
+				suit_return = Cards::Suit::kHeart;
+				is_flush = true;
+			}
+			break;
+
+		}
+	}
+	if (is_flush)
+	{
+		flush = true;
+		player.rankings_ = Player::Rank::kFlush;
+	}
+	switch (suit_return)
+	{
+	case Cards::Suit::kClub:
+		return v_Club;
+	case Cards::Suit::kSquare:
+		return v_Square;
+	case Cards::Suit::kDiamond:
+		return v_Diamond;
+	case Cards::Suit::kHeart:
+		return v_Heart;
+	case Cards::Suit::kNoSuit:
+		break;
 	}
 	return {};
 }
-//Cards::Value Rankings::Flush(Player& player, std::vector<Cards> dealer)
-//{
-//	
-//}
+void Rankings::RoyalFlush(Player& player,std::vector<Cards>straight_flush)
+{
+	int royal_flush = 0;
+	for(auto card:straight_flush)
+	{
+		switch(card.value_)
+		{
+		case Cards::Value::kAce:
+			royal_flush++;
+			break;
+		case Cards::Value::kKing:
+			royal_flush++;
+			break;
+		case Cards::Value::kQueen:
+			royal_flush++;
+			break;
+		case Cards::Value::kJack:
+			royal_flush++;
+			break;
+		case Cards::Value::k10:
+			royal_flush++;
+			break;
+		default:
+			royal_flush = 0;
+			break;
+
+		}
+	}
+	if(royal_flush>=5)
+	{
+		player.rankings_ = Player::Rank::kRoyalFlush;
+	}
+}

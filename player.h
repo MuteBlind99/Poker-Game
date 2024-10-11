@@ -10,7 +10,7 @@ private:
 	std::vector<Cards>hand;
 	//const Value new_card = card;
 public:
-	Player() = default;
+	Player();
 	enum class Rank
 	{
 		kNull,
@@ -22,24 +22,24 @@ public:
 		kFlush,
 		kFullHouse,
 		kFourOfKind,
+		kStraightFlush,
 		kRoyalFlush,
 
 	};
-	int score_=0;
+	int score_ = 0;
 	bool player_win(int player_hand1, int player_hand2);
 	void AddCard(Cards carte);
 	void DisplayHand();
 	void RestHand();
 	std::string RankToString();
 
-	std::vector<Cards>Hand()
+	std::vector<Cards>& Hand()
 	{
-		return  hand;
+		return hand;
 	}
 
-
-	int PlayerHandStraight(Player playerhand, Player dealerhand);
-
 	Rank rankings_;
+
+	Cards high_card_;
 };
 

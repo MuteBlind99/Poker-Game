@@ -32,7 +32,7 @@ public:
 		kClub,
 		kHeart,
 		kDiamond,
-
+		kNoSuit,
 	};
 
 	static Value IntToEnumValue(int value);

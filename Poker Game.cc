@@ -62,13 +62,13 @@ int main()
 		std::cout << '\n';
 
 
-		Cards::Value value = rank_player.DoublePair(player1, dealer.Hand());
+		rank_player.FullHouse(player1, dealer.Hand());
 
 		rank_ = player1.rankings_;
 
 		round++;
 		std::cout << "Round : " << std::endl << round << std::endl;
-		std::cout << "Card : " << static_cast<int>(value) << std::endl;
+		std::cout << "Card : " << player1.high_card_.GetValueToInt() << std::endl;
 		std::cout << player1.RankToString() << std::endl << std::endl;
 
 		player1.RestHand();
@@ -76,10 +76,10 @@ int main()
 		dealer.RestHand();
 		deck.DeckReset();
 	}
-	while (rank_ != Player::Rank::kDoublePair);
+	while (rank_ != Player::Rank::kFullHouse);
 
 
-
+	system("pause");
 
 	////Who win the party ?
 	//if (player1.Hand().front().GetValueToInt() == player2.Hand().front().GetValueToInt())
