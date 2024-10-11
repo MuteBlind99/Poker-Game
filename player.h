@@ -31,7 +31,8 @@ public:
 	void AddCard(Cards carte);
 	void DisplayHand();
 	void RestHand();
-	std::string RankToString();
+	void RankToString();
+	int RankToInt();
 
 	std::vector<Cards>& Hand()
 	{

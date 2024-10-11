@@ -7,158 +7,148 @@
 #include "Deck.h"
 #include "Rankings.h"
 
-int hand1;
-int hand2;
-Player party;
-//Value carte_field;
-//Suit suit_;
-//Player  player1;
-//Player player2;
 
+void NewRound(Deck& deck, Player& player1, Player& player2, Player& dealer)
+{
+	std::cout << std::endl << std::endl << "New Game" << std::endl << std::endl;
 
+	player1.RestHand();
+	player2.RestHand();
+	dealer.RestHand();
+	deck.DeckReset();
+	deck.MakeDeck();
+	deck.ShuffleDeck();
+}
 
+void DrawCard(Deck& deck, Player& player1, Player& player2)
+{
+	//Players draw cards
+	for (int i = 0; i <= 1; i++)
+	{
+		player1.AddCard(deck.PickRemovedCard());
+		player2.AddCard(deck.PickRemovedCard());
+	}
+}
+
+void DisplayHandPlayer(Player& player1, Player& player2)
+{
+	std::cout << "Hand Player 1 : " << std::endl;
+	player1.DisplayHand();
+
+	std::cout << std::endl << "Hand bot : " << std::endl;
+	player2.DisplayHand();
+}
+
+void Flop(Deck& deck, Player& dealer)
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		dealer.AddCard(deck.PickRemovedCard());
+	}
+}
+
+void DisplayTable(Player& player1, Player& bot, Player& dealer)
+{
+	DisplayHandPlayer(player1, bot);
+
+	std::cout << std::endl;
+	dealer.DisplayHand();
+	std::cout << std::endl;
+}
+
+void CheckAllHand(Player& player1, Player& bot, Player& dealer, Rankings& rank_player)
+{
+	rank_player.CheckHand(player1, dealer.Hand());
+	rank_player.CheckHand(bot, dealer.Hand());
+}
+
+void DisplayRank(Player& player1, Player& bot)
+{
+	std::cout << "Rank player 1 : " << std::endl;
+	player1.RankToString();
+	std::cout << std::endl << std::endl;
+	std::cout << "Rank bot : " << std::endl;
+	bot.RankToString();
+	std::cout << std::endl << std::endl;
+}
 
 int main()
 {
 	Deck deck;
-
 	Player player1;
-	Player player2;
+	Player bot;
 	Player dealer;
 	Rankings rank_player;
+	bool game_over = false;
 
-	Player::Rank rank_;
-
-	int round = 0;
 	do
 	{
-		deck.MakeDeck();
+		NewRound(deck, player1, bot, dealer);
 
-		deck.ShuffleDeck();
-		//Players draw cards
-		for (int i = 0; i <= 1; i++)
+		DrawCard(deck, player1, bot);
+
+		DisplayHandPlayer(player1, bot);
+
+		Flop(deck, dealer);
+
+		DisplayTable(player1, bot, dealer);
+
+		//Turn
+		dealer.AddCard(deck.PickRemovedCard());
+
+		DisplayTable(player1, bot, dealer);
+
+		//River
+		dealer.AddCard(deck.PickRemovedCard());
+
+		DisplayTable(player1, bot, dealer);
+
+		CheckAllHand(player1, bot, dealer, rank_player);
+
+		DisplayRank(player1, bot);
+
+		if (player1.RankToInt() > bot.RankToInt())
 		{
-			player1.AddCard(deck.PickRemovedCard());
-			player2.AddCard(deck.PickRemovedCard());
+			std::cout << "Player 1 wins" << std::endl;
 		}
-		std::cout << "You got a " << '\n';
-		player1.DisplayHand();
-		std::cout << '\n';
-
-		std::cout << "Other player got a " << '\n';
-		player2.DisplayHand();
-		std::cout << '\n';
-
-
-		//Field Card
-		for (int i = 0; i <= 4; i++)
+		else if(player1.RankToInt() < bot.RankToInt())
 		{
-			dealer.AddCard(deck.PickRemovedCard());
+			std::cout << "bot wins" << std::endl;
+		}
+		else if(player1.RankToInt() == bot.RankToInt())
+		{
+			if (player1.high_card_.GetValueToInt() > bot.high_card_.GetValueToInt())
+			{
+				if (bot.high_card_.GetValueToInt() == 1)
+				{
+					std::cout << "bot wins" << std::endl;
+				}
+				else
+				{
+					std::cout << "Player 1 wins" << std::endl;
+				}
+			}
+			else if (player1.high_card_.GetValueToInt() < bot.high_card_.GetValueToInt())
+			{
+				if (player1.high_card_.GetValueToInt() == 1)
+				{
+					std::cout << "Player 1 wins" << std::endl;
+				}
+				else
+				{
+					std::cout << "bot wins" << std::endl;
+				}
+			}
+			else if(player1.high_card_.GetValueToInt() == bot.high_card_.GetValueToInt())
+			{
+				std::cout << "It's a tie" << std::endl;
+			}
 		}
 
-
-		std::cout << "Card on field : " << '\n';
-		dealer.DisplayHand();
-		std::cout << '\n';
-
-
-		rank_player.FullHouse(player1, dealer.Hand());
-
-		rank_ = player1.rankings_;
-
-		round++;
-		std::cout << "Round : " << std::endl << round << std::endl;
-		std::cout << "Card : " << player1.high_card_.GetValueToInt() << std::endl;
-		std::cout << player1.RankToString() << std::endl << std::endl;
-
-		player1.RestHand();
-		player2.RestHand();
-		dealer.RestHand();
-		deck.DeckReset();
+		game_over = true;
 	}
-	while (rank_ != Player::Rank::kFullHouse);
+	while (!game_over);
 
 
 	system("pause");
-
-	////Who win the party ?
-	//if (player1.Hand().front().GetValueToInt() == player2.Hand().front().GetValueToInt())
-	//{
-	//	std::cout << "Same suite" << '\n';
-	//}
-	//else if (player1.Hand().front().GetValueToInt() > player2.Hand().front().GetValueToInt())
-	//{
-	//	std::cout << "Player1 win" << '\n';
-	//}
-	//else if (player1.Hand().front().GetValueToInt() < player2.Hand().front().GetValueToInt())
-	//{
-
-	//	std::cout << "Player2 got" << '\n';
-	//	std::cout << "Player2 win" << '\n';
-	//}
-	//if (player1.rankings_ > player2.rankings_)
-	//{
-	//	
-	//}
-
-
-
-
-
-		/*Cards carte_1;
-		Cards carte_2;
-		Cards carte_3;
-		Cards carte_4;
-		Cards field_card;*/
-
-
-		/*std::string<int>carte_p1 = 4;
-		std::string<int>carte_p2 = 3;*/
-
-
-
-
-		/*std::cout << "Player1 got a: " << carte_1.DrawCard() << " and " << carte_2.DrawCard() << '\n';
-
-		std::cout << "player2 got a: " << carte_3.DrawCard() << " and " << carte_4.DrawCard() << '\n';
-
-		for (int i = 0; i < field_card.decksize ;i++)
-		{
-			 field_card.FieldCard();
-		}*/
-		//std::cout << field_card.DrawCard() << std::endl;
-
-		/*int Score_p1 = carte_1.value_()+ carte_2.value_();
-		int Score_p2 = carte_3.value_() + carte_4.value_();*/
-
-		//hand = (Cards)carte_1;
-		//std::queue<int>deck;
-		//for (auto player : carte_p1)
-		//{
-		//	//std::cout << ;
-		//}
-		/*Value carte_value1_p1 = (Value)carte_1.value_;
-		Value carte_value2_p1 = (Value)carte_2.value_;
-		Value carte_value1_p2 = (Value)carte_3.value_;
-		Value carte_value2_p2 = (Value)carte_4.value_;*/
-		//hand1 = carte_1.value_ + carte_2.value_;
-		//hand2 = carte_3.value_ + carte_4.value_;
-		//
-		//// Vainqueur 
-		//if (party.player_win(hand1,hand2))
-		//	{
-		//	std::cout << "Player1 had a " << carte_1.GetSuitString()<< " and " << carte_2.GetSuitString() << '\n';
-		//	std::cout << "Player2 had a " << carte_3.GetSuitString() << " and " << carte_4.GetSuitString() << '\n';
-		//	
-		//	std::cout << "Player1 win";
-		//}
-		//else
-		//{
-		//	std::cout << "Player2 had a " << carte_3.GetSuitString() << " and " << carte_4.GetSuitString() << '\n';
-		//	std::cout << "Player1 had a " << carte_1.GetSuitString() << " and " << carte_2.GetSuitString() << '\n';
-		//	std::cout << "Player2 win";
-
-		//}
-
-
 }
